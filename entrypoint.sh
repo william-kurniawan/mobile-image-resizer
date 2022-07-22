@@ -34,24 +34,20 @@ for f in "${imagearray[@]}"; do
     filename="$(basename "$f" | sed 's/\(.*\)\..*/\1/')"
     echo "filename: $filename"
     arrIN=(${filename//_/ })
-    path="assets/vehicles/${arrIN[0]}/android/hdpi"
-    gitkeep="${path}/.gitkeep"
-    if [ -d "$path" ]; then
-      echo "Destination path exists"
-      true
-    else
-      echo "Create destination path $gitkeep"
-      mkdir -p -- "${gitkeep%/*}" && touch -- "$gitkeep"
-    fi
-    chmod -R ug+w "$path"
-    chmod ug+w "$gitkeep"
-    ls -la "$path"
-    
     echo "Resize $f"
-    mogrify -resize 630x315 -quality 100 -path ${path} "$f"
+    resolutions=( "android/mdpi" "android/hdpi" "android/xhdpi" "android/xxhdpi" "iOS/1x" "iOS/2x" "iOS/3x") 
+    for r in "${resolutions[@]}"; do
+      path="assets/vehicles/${arrIN[0]}/${r}"
+      mogrify -resize 210x105 -quality 100 -path ${path} "$f"
+      mogrify -resize 315x158 -quality 100 -path ${path} "$f"
+      mogrify -resize 420x210 -quality 100 -path ${path} "$f"
+      mogrify -resize 630x315 -quality 100 -path ${path} "$f"
 
-    # mogrify -resize 630x315 -quality 100 -path assets/vehicles "$f"
-    changedCount=$((changedCount+1))
+      mogrify -resize 630x315 -quality 100 -path ${path} "$f"
+      mogrify -resize 420x210 -quality 100 -path ${path} "$f"
+      mogrify -resize 630x315 -quality 100 -path ${path} "$f"
+      changedCount=$((changedCount+7))
+    done
 done
 
 if [ "$changedCount" -gt 0 ]; then

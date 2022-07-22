@@ -28,16 +28,21 @@ for f in "${imagearray[@]}"; do
     filename="$(basename "$f" | sed 's/\(.*\)\..*/\1/')"
     echo "filename: $filename"
     arrIN=(${filename//_/ })
-    path="assets/vehicles/${arrIN[0]}/android/hdpi"
-    gitkeep="${path}/.gitkeep"
-    if [ -d "$path" ]; then
-      echo "Destination path exists"
-      true
-    else
-      echo "Create destination path $gitkeep"
-      mkdir -p -- "${gitkeep%/*}" && touch -- "$gitkeep"
-      changedCount=$((changedCount+1))
-    fi
+    resolutions=( "android/mdpi" "android/hdpi" "android/xhdpi" "android/xxhdpi" "iOS/1x" "iOS/2x" "iOS/3x") 
+    for r in "${resolutions[@]}"
+    do
+      echo "$r"
+      path="assets/vehicles/${arrIN[0]}/${r}"
+      gitkeep="${path}/.gitkeep"
+      if [ -d "$path" ]; then
+        echo "Destination path exists"
+        true
+      else
+        echo "Create destination path $gitkeep"
+        mkdir -p -- "${gitkeep%/*}" && touch -- "$gitkeep"
+        changedCount=$((changedCount+1))
+      fi
+    done
 done
 
 if [ "$changedCount" -gt 0 ]; then
