@@ -15,6 +15,7 @@ jobs:
         with:
           fetch-depth: 2
           ref: ${{ github.event.pull_request.head.sha }}
+          token:  ${{ secrets.GITHUB_TOKEN }}
       - name: Resizer
         uses: ./ # Uses an action in the root directory
         id: resizer

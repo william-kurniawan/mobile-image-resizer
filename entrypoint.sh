@@ -42,11 +42,13 @@ for f in "${imagearray[@]}"; do
     else
       echo "Create destination path $gitkeep"
       mkdir -p -- "${gitkeep%/*}" && touch -- "$gitkeep"
-      chmod -R ug+w "$path";
     fi
+    chmod -R ug+w "$path"
+    chmod ug+w "$gitkeep"
     
     echo "Resize $f"
     mogrify -resize 630x315 -quality 100 -path ${path} "$f"
+    
     # mogrify -resize 630x315 -quality 100 -path assets/vehicles "$f"
     changedCount=$((changedCount+1))
 done
