@@ -29,8 +29,7 @@ for f in "${imagearray[@]}"; do
     echo "filename: $filename"
     arrIN=(${filename//_/ })
     resolutions=( "android/mdpi" "android/hdpi" "android/xhdpi" "android/xxhdpi" "iOS/1x" "iOS/2x" "iOS/3x") 
-    for r in "${resolutions[@]}"
-    do
+    for r in "${resolutions[@]}"; do
       echo "$r"
       path="assets/vehicles/${arrIN[0]}/${r}"
       gitkeep="${path}/.gitkeep"

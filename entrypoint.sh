@@ -35,19 +35,16 @@ for f in "${imagearray[@]}"; do
     echo "filename: $filename"
     arrIN=(${filename//_/ })
     echo "Resize $f"
-    resolutions=( "android/mdpi" "android/hdpi" "android/xhdpi" "android/xxhdpi" "iOS/1x" "iOS/2x" "iOS/3x") 
-    for r in "${resolutions[@]}"; do
-      path="assets/vehicles/${arrIN[0]}/${r}"
-      mogrify -resize 210x105 -quality 100 -path ${path} "$f"
-      mogrify -resize 315x158 -quality 100 -path ${path} "$f"
-      mogrify -resize 420x210 -quality 100 -path ${path} "$f"
-      mogrify -resize 630x315 -quality 100 -path ${path} "$f"
+    path="assets/vehicles/${arrIN[0]}"
+    mogrify -resize 210x105 -quality 100 -path "${path}/android/mdpi" "$f"
+    mogrify -resize 315x158 -quality 100 -path "${path}/android/hdpi" "$f"
+    mogrify -resize 420x210 -quality 100 -path "${path}/android/xhdpi" "$f"
+    mogrify -resize 630x315 -quality 100 -path "${path}/android/xxhdpi" "$f"
 
-      mogrify -resize 630x315 -quality 100 -path ${path} "$f"
-      mogrify -resize 420x210 -quality 100 -path ${path} "$f"
-      mogrify -resize 630x315 -quality 100 -path ${path} "$f"
-      changedCount=$((changedCount+7))
-    done
+    mogrify -resize 630x315 -quality 100 -path "${path}/iOS/1x" "$f"
+    mogrify -resize 420x210 -quality 100 -path "${path}/iOS/2x" "$f"
+    mogrify -resize 630x315 -quality 100 -path "${path}/iOS/3x" "$f"
+    changedCount=$((changedCount+7))
 done
 
 if [ "$changedCount" -gt 0 ]; then
