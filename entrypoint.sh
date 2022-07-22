@@ -36,14 +36,14 @@ for f in "${imagearray[@]}"; do
     arrIN=(${filename//_/ })
     echo "Resize $f"
     path="assets/vehicles/${arrIN[0]}"
-    mogrify -resize 210x105 -quality 100 -path "${path}/android/mdpi" "$f"
-    mogrify -resize 315x158 -quality 100 -path "${path}/android/hdpi" "$f"
-    mogrify -resize 420x210 -quality 100 -path "${path}/android/xhdpi" "$f"
-    mogrify -resize 630x315 -quality 100 -path "${path}/android/xxhdpi" "$f"
+    magick "$f" -resize 210x105 "${path}/android/mdpi/${arrIN[1]}.webp"
+    magick "$f" -resize 315x158 "${path}/android/hdpi/${arrIN[1]}.webp"
+    magick "$f" -resize 420x210 "${path}/android/xhdpi/${arrIN[1]}.webp"
+    magick "$f" -resize 630x315 "${path}/android/xxhdpi/${arrIN[1]}.webp"
 
-    mogrify -resize 630x315 -quality 100 -path "${path}/iOS/1x" "$f"
-    mogrify -resize 420x210 -quality 100 -path "${path}/iOS/2x" "$f"
-    mogrify -resize 630x315 -quality 100 -path "${path}/iOS/3x" "$f"
+    magick "$f" -resize 630x315 "${path}/iOS/1x/${arrIN[1]}.png"
+    magick "$f" -resize 420x210 "${path}/iOS/2x/${arrIN[1]}.png"
+    magick "$f" -resize 630x315 "${path}/iOS/3x/${arrIN[1]}.png"
     changedCount=$((changedCount+7))
 done
 
