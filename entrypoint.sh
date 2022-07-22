@@ -31,21 +31,22 @@ mapfile -t imagearray < <(find "$sourceVehicles" -regextype posix-extended -rege
 
 changedCount=0
 for f in "${imagearray[@]}"; do
-    # filename="$(basename "$f" | sed 's/\(.*\)\..*/\1/')"
-    # echo "filename: $filename"
-    # arrIN=(${filename//_/ })
-    # path="assets/vehicles/${arrIN[0]}"
-    # if [ -d "$path" ]; then
-    #   echo "Destination path exists"
-    #   true
-    # else
-    #   echo "Create destination path $path"
-    #   mkdir $path
-    # fi
+    filename="$(basename "$f" | sed 's/\(.*\)\..*/\1/')"
+    echo "filename: $filename"
+    arrIN=(${filename//_/ })
+    path="assets/vehicles/${arrIN[0]}/android/hdpi"
+    gitkeep="/${path}/.gitkeep"
+    if [ -d "$path" ]; then
+      echo "Destination path exists"
+      true
+    else
+      echo "Create destination path $gitkeep"
+      mkdir -p -- "${gitkeep%/*}" && touch -- "$gitkeep"
+    fi
     
     echo "Resize $f"
-    # mogrify -resize 630x315 -quality 100 -path assets/vehicles/${arrIN[0]} "$f"
-    mogrify -resize 630x315 -quality 100 -path assets/vehicles "$f"
+    mogrify -resize 630x315 -quality 100 -path ${path} "$f"
+    # mogrify -resize 630x315 -quality 100 -path assets/vehicles "$f"
     changedCount=$((changedCount+1))
 done
 
