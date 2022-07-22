@@ -15,12 +15,26 @@ jobs:
         with:
           fetch-depth: 2
           ref: ${{ github.event.pull_request.head.sha }}
+          token:  ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Tree
+        id: create-tree
+        run: infra/scripts/createtree.sh
+        env:
+          SOURCE_VEHICLES: src/vehicles
+          SOURCE_VEHICLE_CLASSES: src/vehicleClasses
       - name: Resizer
         uses: ./ # Uses an action in the root directory
         id: resizer
         with:
           sourceVehicles: src/vehicles
           sourceVehicleClasses: src/vehicleClasses
+          scaleMhdpi: 33%
+          scaleHdpi: 50%
+          scaleXhdpi: 66%
+          scaleXxhdpi: 100%
+          scale1x: 33%
+          scale2x: 66%
+          scale3x: 100%
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v4

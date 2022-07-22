@@ -13,10 +13,44 @@ inputs:
     description: 'Folder in which vehicle class images are stored'
     required: true
     default: 'src/vehicleClass'
-    
+  scaleMhdpi:
+    description: scale the source image by specified percentage for the Android mhdpi size
+    required: true
+    default: '33%'
+  scaleHdpi:
+    description: scale the source image by specified percentage for the Android hdpi size
+    required: true
+    default: '50%'
+  scaleXhdpi:
+    description: scale the source image by specified percentage for the Android xhdpi size
+    required: true
+    default: '66%'
+  scaleXxhdpi:
+    description: scale the source image by specified percentage for the Android xxhdpi size
+    required: true
+    default: '100%'
+  scale1x:
+    description: scale the source image by specified percentage for the iOS 1x size
+    required: true
+    default: '33%'
+  scale2x:
+    description: scale the source image by specified percentage for the iOS 2x size
+    required: true
+    default: '66%'
+  scale3x:
+    description: scale the source image by specified percentage for the iOS 3x size
+    required: true
+    default: '100%'
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
     - ${{ inputs.sourceVehicles }}
     - ${{ inputs.sourceVehicleClasses }}
+    - ${{ inputs.scaleMhdpi }}
+    - ${{ inputs.scaleHdpi }}
+    - ${{ inputs.scaleXhdpi }}
+    - ${{ inputs.scaleXxhdpi }}
+    - ${{ inputs.scale1x }}
+    - ${{ inputs.scale2x }}
+    - ${{ inputs.scale3x }}
