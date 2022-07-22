@@ -1,0 +1,22 @@
+# action.yml
+name: 'Vehicle Images Resizer'
+description: 'Automatically resize vehicle and vehicleClas images'
+branding:
+  icon: 'image'  
+  color: 'green'
+inputs:
+  sourceVehicles:
+    description: 'Folder in which vehicle images are stored'
+    required: true
+    default: 'src/vehicle'
+  sourceVehicleClasses:
+    description: 'Folder in which vehicle class images are stored'
+    required: true
+    default: 'src/vehicleClass'
+    
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.sourceVehicles }}
+    - ${{ inputs.sourceVehicleClasses }}

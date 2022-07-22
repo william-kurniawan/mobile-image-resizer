@@ -1,0 +1,41 @@
+name: Main
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  resizer:
+    runs-on: ubuntu-latest
+    name: Resize the images
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Resizer
+        uses: ./ # Uses an action in the root directory
+        id: resizer
+        with:
+          sourceVehicles: src/vehicles
+          sourceVehicleClasses: src/vehicleClasses
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v4
+        with:
+          committer: GitHub <noreply@github.com>
+          base: ${{ github.event.pull_request.head.ref }}
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          delete-branch: true
+          branch: auto-generated-for-PR-${{ github.event.pull_request.head.ref }}-${{ github.event.pull_request.number }}
+          title: '[bot] PR for #${{ github.event.pull_request.number }}'
+          body: 'Please merge this PR to #${{ github.event.pull_request.number }}'
+      - name: Comment to PR
+        if: steps.cpr.outputs.pull-request-number
+        uses: unsplash/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          msg: 'Please merge #${{ steps.cpr.outputs.pull-request-number }} before merging this PR'
