@@ -42,7 +42,7 @@ for f in "${imagearray[@]}"; do
     else
       echo "Create destination path $gitkeep"
       mkdir -p -- "${gitkeep%/*}" && touch -- "$gitkeep"
-      sudo chmod -R ug+w "$path";
+      chmod -R ug+w "$path";
     fi
     
     echo "Resize $f"
