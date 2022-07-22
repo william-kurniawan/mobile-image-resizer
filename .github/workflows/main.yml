@@ -21,19 +21,21 @@ jobs:
         with:
           sourceVehicles: src/vehicles
           sourceVehicleClasses: src/vehicleClasses
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v9
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v4
         with:
-          author_name: "github-actions[bot]"
-          author_email: "github-actions@users.noreply.github.com"
-          message: |
-            Images Resized by Github action
+          committer: GitHub <noreply@github.com>
+          base: ${{ github.event.pull_request.head.ref }}
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          delete-branch: true
+          branch: auto-generated-for-PR-${{ github.event.pull_request.head.ref }}-${{ github.event.pull_request.number }}
+          title: '[bot] PR for #${{ github.event.pull_request.number }}'
+          body: 'Please merge this PR to #${{ github.event.pull_request.number }}'
+      - name: Comment to PR
+        if: steps.cpr.outputs.pull-request-number
+        uses: unsplash/comment-on-pr@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: mshick/add-pr-comment@v1
         with:
-          message: |
-            Images have been resized
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
-          allow-repeats: true
+          msg: 'Please merge #${{ steps.cpr.outputs.pull-request-number }} before merging this PR'
