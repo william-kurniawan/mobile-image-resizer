@@ -35,7 +35,7 @@ for f in "${imagearray[@]}"; do
     echo "filename: $filename"
     arrIN=(${filename//_/ })
     path="assets/vehicles/${arrIN[0]}/android/hdpi"
-    gitkeep="/${path}/.gitkeep"
+    gitkeep="${path}/.gitkeep"
     if [ -d "$path" ]; then
       echo "Destination path exists"
       true
