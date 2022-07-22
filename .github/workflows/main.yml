@@ -28,6 +28,13 @@ jobs:
         with:
           sourceVehicles: src/vehicles
           sourceVehicleClasses: src/vehicleClasses
+          scaleMhdpi: 33%
+          scaleHdpi: 50%
+          scaleXhdpi: 66%
+          scaleXxhdpi: 100%
+          scale1x: 33%
+          scale2x: 66%
+          scale3x: 100%
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v4
