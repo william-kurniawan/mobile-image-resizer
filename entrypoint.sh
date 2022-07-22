@@ -45,10 +45,11 @@ for f in "${imagearray[@]}"; do
     fi
     chmod -R ug+w "$path"
     chmod ug+w "$gitkeep"
+    ls -la "$path"
     
     echo "Resize $f"
     mogrify -resize 630x315 -quality 100 -path ${path} "$f"
-    
+
     # mogrify -resize 630x315 -quality 100 -path assets/vehicles "$f"
     changedCount=$((changedCount+1))
 done
